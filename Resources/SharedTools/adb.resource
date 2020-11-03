@@ -7,8 +7,7 @@ Library  Process
 Library  OperatingSystem
 Library  String
 Library  Collections
-Library  ../../CustomLibraries/cmdcommands.py
-#Library    TitanLibrary.handlers.commandLine
+Library  TitanLibrary.handlers.commandline
 Resource  Files.resource
 
 *** Keywords ***
@@ -158,16 +157,16 @@ URL is Reachable from Device
 
 Turn Off the Wifi on Device by ADB
     Run Process  adb  shell  svc  wifi  disable
-    ${wifi_status}  Check Wifi Status Adb
+    ${wifi_status}  Check Wifi Status Adb  ${DEVICE_ID}
     Should Contain  ${wifi_status}  Wi-Fi is disabling
 
 Turn On the Wifi on Device by ADB
     Run Process  adb  shell  svc  wifi  enable
-    ${wifi_status}  Check Wifi Status Adb
+    ${wifi_status}  Check Wifi Status Adb  ${DEVICE_ID}
     Should Contain  ${wifi_status}  Wi-Fi is enabling
     
 Wifi is On in the Device
     [Documentation]  Returns True if the Wifi is on, otherwise it returns false
-    ${wifi_status}  Check Wifi Status Adb
+    ${wifi_status}  Check Wifi Status Adb  ${DEVICE_ID}
     ${wifi_on}  Set Variable If  '${wifi_status}'=='Wi-Fi is enabled'  True  False
     [Return]  ${wifi_on}
