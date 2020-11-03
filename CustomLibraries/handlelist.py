@@ -25,8 +25,8 @@ def list_to_dictionary(list_text, separator):
     for el in list_text:
         if separator in el:
             list_words =  el.split(separator)
-            word1 = list_words[0].replace(' ','')
-            word2 = list_words[1].replace(' ','')
+            word1 = list_words[0].strip()
+            word2 = list_words[1].strip()
             dictionary.update({word1:word2})
     return dictionary
 
