@@ -14,6 +14,11 @@ Library  TitanLibrary.handlers.commandline
 Resource  Files.resource
 
 *** Keywords ***
+Remove Folder from Device
+    [Arguments]  ${folder_path}  ${device_name}=${TEST_DEVICE_ID}
+    ${result}  Run Process  adb  -s  ${device_name}  rm  -r  ${folder_path}
+    Log  ${result.stdout}
+
 Add File to Path in Device
     [Documentation]  ${file_path} must have the complete root of the file including the name
     ...  of the file. ${dst_path} could only have the destionation folder root, and
@@ -140,6 +145,11 @@ App with Activity is Started on Device
     ...  ${package_name}/${package_name}.${activity_name}
     Log  ${result.stdout}
     Should Not Match Regexp  ${result.stdout}  Error|Exception
+
+App is Rebooted on Device
+    [Arguments]  ${package_name}  ${activity_name}  ${device_name}=${TEST_DEVICE_ID}
+    App is killed on Device  ${package_name}  ${device_name}
+    App with Activity is Started on Device  ${package_name}  ${activity_name}
 
 Reach URLs from Device
     [Documentation]  It tries to reach all the urls given in ${end_points} as a list.
