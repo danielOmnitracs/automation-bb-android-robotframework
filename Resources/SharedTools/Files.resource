@@ -4,7 +4,9 @@ Documentation  Resource mean for storing keywords for file management.
 
 Library  OperatingSystem
 Library  String
+Library  Collections
 Library  ../../CustomLibraries/handlelist.py
+Resource  adb.resource
 
 *** Keywords ***
 Get Lines Matching a regexp from File

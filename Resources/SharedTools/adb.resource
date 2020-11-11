@@ -7,11 +7,8 @@ Documentation  This file contains low level keywords related to ADB commands.
 ...  device name as an argument when calling the keyword.
 
 Library  Process
-Library  OperatingSystem
 Library  String
-Library  Collections
 Library  TitanLibrary.handlers.commandline
-Resource  Files.resource
 
 *** Keywords ***
 Remove Folder from Device
@@ -97,7 +94,7 @@ Run adb getprop on Device
     [Return]  ${result.stdout}
     
 The Device is Rebooted
-    [Arguments]  ${device_name}=${TEST_DEVICE_ID}
+    [Arguments]  ${device_name}=${TEST_DEVICE_ID}  ${sleep_after_reboot}=30s
     Run Process  adb  -s  ${device_name}  reboot
     FOR  ${i}  IN RANGE  12
         Sleep  10s
@@ -105,7 +102,7 @@ The Device is Rebooted
         Run Keyword If  '${device_name}' in $result.stdout  Exit For Loop
     END
     #Wait some time for some application to auto-launch
-    Sleep  30s
+    Sleep  ${sleep_after_reboot}
 
 The Device is On
     [Arguments]  ${device_name}=${TEST_DEVICE_ID}
@@ -138,7 +135,7 @@ App is killed on Device
     [Arguments]  ${package_name}  ${device_name}=${TEST_DEVICE_ID}
     Run Process  adb  -s  ${device_name}  shell  am  force-stop  ${package_name}
 
-App with Activity is Started on Device
+Start App with Activity on Device
     [Documentation]  It starts the specified application.
     [Arguments]  ${package_name}  ${activity_name}  ${device_name}=${TEST_DEVICE_ID}
     ${result}  Run Process  adb  -s  ${device_name}  shell  am  start  -n  
@@ -149,7 +146,7 @@ App with Activity is Started on Device
 App is Rebooted on Device
     [Arguments]  ${package_name}  ${activity_name}  ${device_name}=${TEST_DEVICE_ID}
     App is killed on Device  ${package_name}  ${device_name}
-    App with Activity is Started on Device  ${package_name}  ${activity_name}
+    Start App with Activity on Device  ${package_name}  ${activity_name}
 
 Reach URLs from Device
     [Documentation]  It tries to reach all the urls given in ${end_points} as a list.
