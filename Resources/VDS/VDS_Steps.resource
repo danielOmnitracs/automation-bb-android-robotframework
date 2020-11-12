@@ -2,6 +2,7 @@
 Library    TitanLibrary.handlers.serialdriver.SerialDriver
 Library    String
 Resource    ../Tools/BasicLayer.resource
+Resource    ../Tools/adb.resource
 
 
 *** Variables ***
@@ -17,25 +18,41 @@ Step 0 Get Trigger Reason
     @{words}    Split string    ${first}
     FOR    ${word}  IN  @{words}
         ${flag}    run keyword and return status    should contain  ${word}  Trigger    ignore_case=True
-        ${trigger_reason} =  set variable    ${word}
+        ${wanted} =  set variable    ${word}
         Exit for loop if    '${flag}' == 'True'
     END
-    log    ${trigger_reason}
-    [Return]  ${trigger_reason}
+    log    ${wanted}
+    [Return]  ${wanted}
+
+Step 1 Remove Locks
+    ${file_name} =    get log file path    app
+    ${data} =    Get Step Data from log file    ${file_name}   Step=1
+    #log to console    ${data}
+    log    ${data}
+    [Return]  ${data}
+
+Step 2 Inialize Devices
+    ${file_name} =    get log file path    app
+    ${data} =    BasicLayer.Get Step Data from log file     ${file_name}    Step=2
+    #log to console    ${data}
+    log    ${data}
+    [Return]  ${data}
+
+Step 3 Load Filter Tables
+    ${file_name} =    get log file path    app
+    ${data} =    Get Step Data from log file     ${file_name}   Step=3
+    #log to console    ${data}
+    log    ${data}
+    [Return]  ${data}
 
 
-Step 4 Verify Files Exist
-    [Documentation]    In this step verifies; CurrentVdsConfiguration.txt, VdsData.bin,
-     ...    and VdsState.bin files exist in /storage/emulated/0/Documents/Omnitracs/AppData/VehicleService
-    ${file_1} =    set variable    CurrentVdsConfiguration.txt
-    ${file_2} =    set variable    VdsData.bin
-    ${file_3} =    set variable    VdsState.bin
+Step 4 Verify File Exist in Path
+    [Documentation]    This step verifies; the given files exist in destination path. By default dst_path is 
+    ...  /storage/emulated/0/Documents/Omnitracs/AppData/VehicleService. Other value can be assigned when necessary.
 
-    ${result}    Run process  adb  shell  cd  /storage/emulated/0/Documents/Omnitracs/AppData/VehicleService  ;  ls
-    run keyword and continue on failure    should contain   ${result.stdout}  ${file_1}
-    ...    Missing File: ${file_1}    values=False
-    run keyword and continue on failure    should contain   ${result.stdout}  ${file_2}
-    ...    Missing File: ${file_2}    values=False
-    run keyword and continue on failure    should contain   ${result.stdout}  ${file_3}
-    ...    Missing File: ${file_3}    values=False
+    [Arguments]  ${file}  ${dst_path}=storage/emulated/0/Documents/Omnitracs/AppData/VehicleService       
+    ${flag}  Is File in Device Path    ${file}    ${dst_path} 
+    Run Keyword Unless    ${flag}  log  ${file} is NOT found in the path of ${dst_path}    
+
+
 

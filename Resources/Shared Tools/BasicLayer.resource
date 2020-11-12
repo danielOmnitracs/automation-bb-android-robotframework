@@ -5,26 +5,25 @@ Library    ../../CustomLibraries/logParser.py
 Library    OperatingSystem
 Library    Process
 Library    String
+Resource   adb.resource 
 
 
 *** Variables ***
-${destination_for_debugconfig} =    sdcard/Documents/Omnitracs
+
 
 *** Keywords ***
 
 Delete 'VehicleService' folder from device
     [Documentation]    Deletes the VehicleService folder in our device, as a given pre-condition
     Run process    adb  shell  cd  sdcard/Documents/Omnitracs/AppData    ;    rm -rf VehicleService
+    # Remove Folder from Device  /sdcard/Documents/Omnitracs/AppData/VehicleService  
     ${result}     Run process    adb  shell  cd  sdcard/Documents/Omnitracs/AppData    ;    ls
     should not contain  ${result.stdout}  VehicleService  msg= VehicleService file could not be deleted. \n
 
 Push 'debugconfig' file to device
-    [Documentation]    Pushes the debugconfig file to the device as a given pre-condition,
-    ...    unless the device already has it.
-    ${result}    Run process  adb  shell  cd  sdcard/Documents/Omnitracs  ;    ls -la
-    ${failed}    Run keyword and return status    should contain    ${result.stdout}    debugconfig.ini
-    Run keyword unless    ${failed}    Run process  adb  push  ${EXEC_DIR}/Data/debugconfig.ini
-    ...    ${destination_for_debugconfig}
+    [Documentation]    Pushes the debugconfig file to the sdcard/Documents/Omnitracs path of the 
+    ...   device as a given pre-condition.The mentioned file assumed to be inside the Data folder of the project.
+    Add File to Path in Device    ${EXEC_DIR}/Data/debugconfig.ini    sdcard/Documents/Omnitracs
 
 Reboot the device
     [Documentation]    Reboots the device with ADB command
@@ -37,19 +36,15 @@ Waiting for device to be ready after reboot
     ${file_path}    get log file path    app
     log to console    ${file_path}
     log to console    Waiting device to be ready, will wait up to 3 mins
-    FOR    ${index}    IN RANGE    1    60
+    FOR    ${i}    IN RANGE    60
         ${file_content}    get file    ${file_path}    encoding_errors=ignore
-        ${flag}    run keyword and return status    should contain    ${file_content}
-        ...    All services entered Running state    values=False   ignore_case=True
-        Exit for loop if  "${flag}" == "True"
+        Run Keyword If   'All services entered Running state' in $file_content  Exit For Loop          
         sleep    5s
     END
 
 Get Step Data from log file
     [Documentation]    From atom log files gets the information in between two step words
     [Arguments]    ${filename}    ${stringToFind}
-    ${stringLines} =   LogParser.get step data from logfile    ${filename}    ${stringToFind}
+    ${stringLines} =   logParser.get step data from logfile    ${filename}    ${stringToFind}
     [Return]    ${stringLines}
-
-
 
