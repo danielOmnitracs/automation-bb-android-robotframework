@@ -61,7 +61,7 @@ String not Found in Serial Log File
     ${result}  File Contains String  ${string_to_find}  ${path}
     Should Not Be True  ${result}
 
-Word is in Log File More Than N
+Word is in Log File More Than N Times
     [Arguments]  ${sting_to_find}  ${log_name}  ${occurrences}
     ${path}  Get Log File Path  ${log_name}
     ${result}  Count Word in File  ${sting_to_find}  ${path}

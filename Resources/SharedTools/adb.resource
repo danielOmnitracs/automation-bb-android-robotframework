@@ -15,6 +15,7 @@ Remove Folder from Device
     [Arguments]  ${folder_path}  ${device_name}=${TEST_DEVICE_ID}
     ${result}  Run Process  adb  -s  ${device_name}  rm  -r  ${folder_path}
     Log  ${result.stdout}
+    Should Be Empty  ${result.stdout}
 
 Add File to Path in Device
     [Documentation]  ${file_path} must have the complete root of the file including the name

@@ -64,4 +64,6 @@ File Content to List
 Create Command Configuration File with a Command in Local Folder
     [Documentation]  Data/TestFiles folder should be created in the root of the project.
     [Arguments]  ${command}
-    Create File  ${EXECDIR}/Data/TestFiles/command.ini  content=${command}
+    ${file_path}  Set Variable  ${EXECDIR}/Data/TestFiles/command.ini
+    Create File  ${file_path}  content=${command}
+    [Return]  ${file_path} 
