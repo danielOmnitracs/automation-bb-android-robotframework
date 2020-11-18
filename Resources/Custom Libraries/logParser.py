@@ -30,12 +30,12 @@ def get_step_data_from_logfile(filename, stringToFind, timeout=45):
          str 
             lines of string starting with stepName and ending with stepName
     """
-    stringToFind += ' '
+    stringToFind = stringToFind.lower() + ' '
 
     for i in range(timeout):
         file = open(filename, 'r')
-        if stringToFind in file.read():
-            time.sleep(3)
+        if stringToFind in file.read().lower():
+            time.sleep(0.5)
             break
         else:
             time.sleep(1)
@@ -44,12 +44,12 @@ def get_step_data_from_logfile(filename, stringToFind, timeout=45):
     f = open(filename, 'r')
     line = f.readline()
     while line:                    
-        if stringToFind in line:
+        if stringToFind in line.lower():
             while line:
-                string_content += line.strip()+'\n'
+                string_content += line
                 line = f.readline()
-                if stringToFind in line:
-                    string_content += line.strip()+'\n'
+                if stringToFind in line.lower():
+                    string_content += line
                     break
         line = f.readline()
     f.close()
@@ -58,12 +58,11 @@ def get_step_data_from_logfile(filename, stringToFind, timeout=45):
 
 
 
-
 """Examples for the method:
 
 If the stringToFind is "Step=15"
 
-09/30 10:05:29 [Vds.UpdateTimer,INF] Conf: Step=14 ConfigureHardBraking ended. Step time=0.00 sec. Total time=39.11 sec, attempts:1. IgnitionTimer: 39099 ms.
+
 09/30 10:05:29 [Vds.UpdateTimer,INF] Conf: Step=15 ConfigurationVerification started. Total time=39.11 sec. IgnitionTimer: 39100 ms.
 09/30 10:05:29 [Vds.UpdateTimer,INF] Conf: VDS configuration verification started.
 09/30 10:05:29 [Vds.UpdateTimer,INF] Conf:    Core data item DistanceLtd configuration verified.  Receiving data from 0xFEC100.
