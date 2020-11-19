@@ -13,7 +13,7 @@ Library  TitanLibrary.handlers.commandline
 *** Keywords ***
 Remove Folder from Device
     [Arguments]  ${folder_path}  ${device_name}=${TEST_DEVICE_ID}
-    ${result}  Run Process  adb  -s  ${device_name}  rm  -r  ${folder_path}
+    ${result}  Run Process  adb  -s  ${device_name}  shell  rm  -r  ${folder_path}
     Log  ${result.stdout}
     Should Be Empty  ${result.stdout}
 
