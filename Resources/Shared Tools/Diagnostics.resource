@@ -1,6 +1,6 @@
 *** Settings ***
 Library  AppiumLibrary  
-Variables  ../../PO/Diagnostics/Diagnostics.yaml
+Variables  Diagnostics.yaml
 
 
 *** Variables ***
