@@ -1,7 +1,8 @@
 import time
 
 
-def get_step_data_from_logfile(filename, stringToFind, timeout=45):
+
+def get_the_part_from_log_file_between_two_same_strings(filename, stringToFind, timeout=45):
     """ This method accepts two parameters: filename and stringToFind
         Parameters
         ---------
@@ -9,33 +10,34 @@ def get_step_data_from_logfile(filename, stringToFind, timeout=45):
             The absolute path of the file that will be parsed.
         
         stringToFind: str
-            a statement that exists at least twice inside the logs.
+            a statement that exists at least twice inside the given file.
         
         timeout: int
-            an integer value that the method will wait in seconds, by default it is 45 secs.
+            an integer value that the method will wait in seconds for the logs to be created, by default it is 45 secs.
 
         EX:
             get_step_data_from_logfile(filename, 'Step=15')
+
         filename can be obtained dynamically with the get_log_file_path method which exist in TitanLibrary.
 
-        - The method will parse the specified log file according to the given step name.
-        - The method is written aiming that the given keyword exists at least two times inside the file.
+        - The method will parse the specified log file according to the given stringToFind.
+        - The method is written aiming that the given keyword exists at least twice inside the file.
         - And the returning string will consist of data that exists between the 2 keywords.
-        - By default there is 45 seconds of timeout, in case it is necessary for the AMG-C to run the script.
+        - By default there is 45 seconds of timeout, in case it is necessary for the device to produce the logs.
 
         If the stringToFind does NOT exist the method will return an empty string.
 
         Returns:
         -------
          str 
-            lines of string starting with stepName and ending with stepName
+            lines of string starting with stringToFind and ending with stringToFind
     """
     stringToFind = stringToFind.lower() + ' '
 
     for i in range(timeout):
         file = open(filename, 'r')
         if stringToFind in file.read().lower():
-            time.sleep(0.5)
+            time.sleep(3)
             break
         else:
             time.sleep(1)
