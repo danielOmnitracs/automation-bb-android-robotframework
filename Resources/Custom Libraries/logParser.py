@@ -1,9 +1,8 @@
 import time
 
 
-
-def get_the_part_from_log_file_between_two_same_strings(filename, stringToFind, timeout=45):
-    """ This method accepts two parameters: filename and stringToFind
+def get_text_surrounded_by_string(filename, stringToFind, timeout=45):
+    """ This method accepts three parameters: filename, stringToFind and timeout.
         Parameters
         ---------
         filename: str
@@ -13,10 +12,10 @@ def get_the_part_from_log_file_between_two_same_strings(filename, stringToFind, 
             a statement that exists at least twice inside the given file.
         
         timeout: int
-            an integer value that the method will wait in seconds for the logs to be created, by default it is 45 secs.
+            an integer value that the method will wait in SECONDS for the logs to be created, by default it is 45 secs.
 
         EX:
-            get_step_data_from_logfile(filename, 'Step=15')
+            get_text_surrounded_by_string(filename, 'Step=15')
 
         filename can be obtained dynamically with the get_log_file_path method which exist in TitanLibrary.
 
@@ -24,6 +23,7 @@ def get_the_part_from_log_file_between_two_same_strings(filename, stringToFind, 
         - The method is written aiming that the given keyword exists at least twice inside the file.
         - And the returning string will consist of data that exists between the 2 keywords.
         - By default there is 45 seconds of timeout, in case it is necessary for the device to produce the logs.
+        - It is a dynamic sleep function that if the given string is in the file it will not wait for the timeout.
 
         If the stringToFind does NOT exist the method will return an empty string.
 

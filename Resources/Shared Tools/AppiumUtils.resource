@@ -17,3 +17,5 @@ Click with Swipe
       Exit For Loop If    ${flag}  
       Run Keyword Unless    ${flag}    Swipe  700  600  700  100            
     END 
+
+    
