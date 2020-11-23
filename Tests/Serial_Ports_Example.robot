@@ -2,7 +2,6 @@
 #To use this library it must be installed in the used environment
 #In the termina 'pip install path/to/wheel/of/package'
 Library    TitanLibrary.handlers.serialdriver.SerialDriver
-Library  OperatingSystem
 Resource    ../Resources/SharedTools/SerialPorts.resource
 
 
