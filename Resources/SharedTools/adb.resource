@@ -78,9 +78,11 @@ Get File from Device to Local Data Temp Folder
     ...  The folder in the current project Data/Temp, has to be created first.
     [Arguments]  ${file_path}  ${device_name}=${TEST_DEVICE_ID}
     ${file_name}  Fetch From Right  ${file_path}  /
-    Run Process  adb  -s  ${device_name}  pull  ${file_path}  ${EXECDIR}/Data/Temp/pull_${file_name}
-    Log  ${EXECDIR}\\Data\\Temp\\pull_${file_name}
-    [Return]  ${EXECDIR}\\Data\\Temp\\pull_${file_name}
+    ${output_file}  Set Variable  ${EXECDIR}\\Data\\Temp\\pull_${file_name}
+    ${result}  Run Process  adb  -s  ${device_name}  pull  ${file_path}  ${output_file}
+    Log  ${result.stdout}
+    Should Not Contain  ${result.stdout}  error
+    [Return]  ${output_file}
 
 Show File Content from Device in Shell
     [Documentation]  It returns the output of the file.
@@ -184,3 +186,10 @@ Wifi is On in the Device
     ${wifi_status}  Check Wifi Status Adb  ${device_name}
     ${wifi_on}  Set Variable If  '${wifi_status}'=='Wi-Fi is enabled'  True  False
     [Return]  ${wifi_on}
+
+Create a File of Specific Size on Device
+    [Documentation]  It creates a dummy file with a specif size ${file_size_with_units}, it must 
+    ...  be specified as integer with the MB termination. ${file_path} musth have the complete
+    ...  path to the destination folder and the name of the file with the extension.
+    [Arguments]  ${file_path}  ${file_size_with_units}  ${device_name}=${TEST_DEVICE_ID}
+    Run Process  adb  -s  ${device_name}  shell  truncate  -s  ${file_size_with_units}  ${file_path}
