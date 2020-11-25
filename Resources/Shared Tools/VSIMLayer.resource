@@ -3,7 +3,7 @@ Documentation    Reaches to the CommandLine module for the automation of VSIM ap
 Library    TitanLibrary.handlers.commandline
 
 # After importing the "commandline" module, Pycharm IDE shows "keyword not found error"
-# Probably it is a bug, the keywords work without any problem.
+# Probably it is a bug of Pycharm, the keywords work without any problem.
 *** Keywords ***
 
 Send a 'command' to VSIM
@@ -14,9 +14,11 @@ Send a 'command' to VSIM
     log to console    ${result}
     log     ${result}
 
-    run keyword IF    '${command}' == 'connect'    should contain    ${result}    Connected to Service
-    ...    ELSE     should contain    ${result}    Sucessfully
-
+    run keyword IF    '${command}' == 'connect'    should contain    ${result}    Connected to Service  
+    ...    msg=A problem has occurred with the VSIM connection!
+    ...    ELSE IF    '${command}' == 'exit'    Log    Could exit VSIM successfully.
+    ...    ELSE     should contain    ${result}    Sucessfully  msg=A problem has occurred with the VSIM connection!\n 
+    
 Send command to VSIM open a script
     [Documentation]    The script we want to run in VSIM is assumed to be in 'Data/VsimScripts' folder of the project.
     ...    When this keyword is called, only the file name (with extention) should be given as an argument.
@@ -24,6 +26,4 @@ Send command to VSIM open a script
     ${result}    send a command to vsim    open, ${EXEC_DIR}/Data/VsimScripts/${filename}
     log to console    ${result}
     log     ${result}
-    should contain    ${result}    Sucessfully
-
-
+    should contain    ${result}    Sucessfully  msg=A problem has occurred while opening the script!

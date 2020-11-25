@@ -11,7 +11,7 @@ Step 15 Verify Core Data Items
     [Documentation]    Verifies 4 Core Items, CoreBus Info and VDS Configuration status.
     [Arguments]    ${core_bus}
     ${file_name} =    get log file path    app
-    ${data} =    Get Step Data from log file    ${file_name}   Step=15
+    ${data} =    Get Text From log File Surrounded By a String    ${file_name}   Step\=15
     ${size}    get length    ${data}
     run keyword if    ${size}==0    Fail    Couldn't get 'Step=15' Data
     log    ${data}
@@ -27,7 +27,7 @@ Step 15 Verify Missing Speed Core Data Item
     [Documentation]    Verifies Core Items except speed and verifies failure of CoreBus Info and VDS Configuration status.
     [Arguments]    ${core_bus}
     ${file_name} =    get log file path    app
-    ${data} =    Get Step Data from log file    ${file_name}   Step=15
+    ${data} =    Get Text From log File Surrounded By a String    ${file_name}   Step\=15
     ${size}    get length    ${data}
     run keyword if    ${size}==0    Fail    Couldn't get 'Step=15' Data
     log    ${data}
@@ -85,14 +85,14 @@ Verify CoreBus Info
     run keyword and continue on failure    should contain   ${data}    CoreBus = ${core_bus}
     ...    CoreBus Info is NOT matching    values=False
     run keyword and continue on failure    should contain   ${data}    ${core_bus} count: 4
-    ...    Missing CoreBus Item number    values=False
+    ...    Missing CoreBus Item     values=False
 
 Verify Missing CoreBus Info
     [Arguments]    ${data}    ${core_bus}
     run keyword and continue on failure    should contain   ${data}    CoreBus = ${core_bus}
     ...    CoreBus Info is NOT matching    values=False
     run keyword and continue on failure    should not contain   ${data}    ${core_bus} count: 4
-    ...    Unexpected CoreBus Item number    values=False
+    ...    Unexpected number of CoreBus Item     values=False
 
 Verify VDS Configuration Status
     [Arguments]    ${data}

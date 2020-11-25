@@ -1,18 +1,15 @@
-import time
 
 
-def get_text_surrounded_by_string(filename, stringToFind, timeout=45):
-    """ This method accepts three parameters: filename, stringToFind and timeout.
+def get_text_surrounded_by_string(filename, stringToFind):
+    """ This method accepts two parameters: filename and stringToFind.
         Parameters
         ---------
         filename: str
             The absolute path of the file that will be parsed.
         
         stringToFind: str
-            a statement that exists at least twice inside the given file.
+            a statement that exists at least twice inside the given file.      
         
-        timeout: int
-            an integer value that the method will wait in SECONDS for the logs to be created, by default it is 45 secs.
 
         EX:
             get_text_surrounded_by_string(filename, 'Step=15')
@@ -22,8 +19,7 @@ def get_text_surrounded_by_string(filename, stringToFind, timeout=45):
         - The method will parse the specified log file according to the given stringToFind.
         - The method is written aiming that the given keyword exists at least twice inside the file.
         - And the returning string will consist of data that exists between the 2 keywords.
-        - By default there is 45 seconds of timeout, in case it is necessary for the device to produce the logs.
-        - It is a dynamic sleep function that if the given string is in the file it will not wait for the timeout.
+        - By default there is 45 seconds of timeout, in case it is necessary for the device to produce the logs.        
 
         If the stringToFind does NOT exist the method will return an empty string.
 
@@ -32,15 +28,7 @@ def get_text_surrounded_by_string(filename, stringToFind, timeout=45):
          str 
             lines of string starting with stringToFind and ending with stringToFind
     """
-    stringToFind = stringToFind.lower() + ' '
-
-    for i in range(timeout):
-        file = open(filename, 'r')
-        if stringToFind in file.read().lower():
-            time.sleep(3)
-            break
-        else:
-            time.sleep(1)
+    stringToFind = stringToFind.lower() + ' ' 
     
     string_content = ''
     f = open(filename, 'r')
