@@ -10,6 +10,7 @@ Library  OperatingSystem
 Library  String
 Library  Collections
 Library  ../../CustomLibraries/handlelist.py
+Library  ../../CustomLibraries/logParser.py
 Resource  adb.resource
 
 *** Keywords ***
@@ -67,3 +68,9 @@ Create Command Configuration File with a Command in Local Folder
     ${file_path}  Set Variable  ${EXECDIR}/Data/TestFiles/command.ini
     Create File  ${file_path}  content=${command}
     [Return]  ${file_path} 
+
+Get Text From Log File Surrounded By a String
+    [Documentation]    From serial log files gets the stringLines surrounded by a string.
+    [Arguments]    ${filename}    ${stringToFind}
+    ${stringLines} =   logParser.get text surrounded by string   ${filename}    ${stringToFind}
+    [Return]    ${stringLines}

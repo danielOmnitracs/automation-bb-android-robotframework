@@ -8,9 +8,8 @@ def get_text_surrounded_by_string(filename, stringToFind):
             The absolute path of the file that will be parsed.
         
         stringToFind: str
-            a statement that exists at least twice inside the given file.      
-        
-
+            a statement that exists at least twice inside the given file.  
+            
         EX:
             get_text_surrounded_by_string(filename, 'Step=15')
 
