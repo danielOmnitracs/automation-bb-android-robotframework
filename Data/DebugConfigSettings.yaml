@@ -1,0 +1,57 @@
+DEBUGCONFIG_DEST_PATH: sdcard/Documents/Omnitracs
+
+REGULAR_VDS_SETTINGS: |+ 
+  [Trace]
+  VehicleService.TraceLevel=Debug
+  VdsDatTranslationService.TraceLevel=Debug
+  Vds.TraceLevel=Debug
+  VdsJ1939DevMgr.TraceLevel=Debug  ; spawned by VehicleService
+  VdsJ1587DevMgr.TraceLevel=Debug  ; spawned by VehicleService
+  ConnectionService.TraceLevel=Debug
+  
+  [CoreService]
+  DefaultPowerDownInterval=5              ; in minutes which puts system in sleep and resets other timeouts 
+  
+  [Vds]
+  EnableDataIntegrityPass=true 
+  EnableBusDeviceTriggers=true
+  ReconfigOnDeviceRemoval=true
+  ReconfigOnDeviceDetection=true
+  ReconfigOnVinChange=true
+  ReconfigOnCiChange=true
+  ReconfigOnSoftChange=true
+  ReconfigOnAclChange=true
+  ReconfigOnOdometerTimeout=true
+  ReconfigOnFuelLtdTimeout=true
+  ReconfigOnEngineTimeLtdTimeout=true
+  J1939.TracePackets=true
+  J1587.TracePackets=true
+  
+  ;Auto-trace Section
+  TracePowerState=true
+  TraceAnalogInputs=true
+  TraceDigitalInputs=true
+  TraceDigitalOutputs=true
+  TraceQueues=true
+  TraceJ1939Filters=true
+  TraceJ1587Filters=true
+  TracePapiStatistics=true
+  TraceDataItems=true
+  AutoTraceIntervalSec=10 
+
+
+TraceDeviceMonitor: |+
+  TraceDeviceMonitor=true  
+
+ReconfigOnDeviceDetection: |+
+  EnableBusDeviceTriggers=true 
+  ReconfigOnDeviceDetection=true
+
+VDSAutoFuncTriggers: |+
+  EnableBusDeviceTriggers=true 
+  ReconfigOnDeviceRemoval=true               ;Enables VDS reconfiguration when device removal is detected
+  ReconfigOnDeviceDetection=true              ;Enables VDS reconfiguration when new device is detected
+  ReconfigOnVinChange=true                   ;Enables VDS reconfiguration when engine's VIN changes
+  ReconfigOnCiChange=true                  ;Enables VDS reconfiguration when engine's Component id changes
+  ReconfigOnSoftChange=true                  ;Enables VDS reconfiguration when engine's software id changes
+  ReconfigOnAclChange=true                    ;Enables VDS reconfiguration when engine's ACL name changes
