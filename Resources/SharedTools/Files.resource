@@ -72,5 +72,5 @@ Create Command Configuration File with a Command in Local Folder
 Get Text From Log File Surrounded By a String
     [Documentation]    From serial log files gets the stringLines surrounded by a string.
     [Arguments]    ${filename}    ${stringToFind}
-    ${stringLines} =   logParser.get text surrounded by string   ${filename}    ${stringToFind}
+    ${stringLines} =   Get Text Surrounded by String   ${filename}    ${stringToFind}
     [Return]    ${stringLines}

@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation  Page Object for Diagnostics Application.
 Library  AppiumLibrary  
-Variables  ../../Data/Diagnostics.yaml
+Variables  ../Data/Diagnostics.yaml
 
 *** Variables ***
 ${appPackage} =  com.omnitracs.diagnostics
