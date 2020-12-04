@@ -92,5 +92,11 @@ Serial Log File Contains Words
     ${result}  Verify Multiple Strings in File  ${words}  ${path}
     should be true  ${result}
 
+Get First Line in Log File with Specified String
+    [Arguments]  ${log_name}  ${string_to_find}
+    ${path}  Get Log File Path  ${log_name}
+    ${line_with_string}  Return First Line with String  ${string_to_find}  ${path}
+    [Return]  ${line_with_string}
+
 Close Serial Ports
     close port

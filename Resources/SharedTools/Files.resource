@@ -61,9 +61,11 @@ File Content to List
     Log  ${file_content_list}
     [Return]  ${file_content_list}
 
-Create Command Configuration File with a Command in Local Folder
-    [Documentation]  Data/TestFiles folder should be created in the root of the project.
-    [Arguments]  ${command}
-    ${file_path}  Set Variable  ${EXECDIR}/Data/TestFiles/command.ini
-    Create File  ${file_path}  content=${command}
+Create a Configuration File with some Text in Local Projet Folder
+    [Documentation]  Create a file with the specified name and extension ${file_name} in Data/TestFiles.
+    ...  The contain of the file will be ${file_text}
+    ...  The test should be executed in the root of the project. 
+    [Arguments]  ${file_name}  ${file_text}
+    ${file_path}  Set Variable  ${EXECDIR}/Data/TestFiles/${file_name}
+    Create File  ${file_path}  content=${file_text}
     [Return]  ${file_path} 

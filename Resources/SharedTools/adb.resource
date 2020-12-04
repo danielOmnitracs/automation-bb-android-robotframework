@@ -90,6 +90,21 @@ Show File Content from Device in Shell
     ${result}  Run Process  adb  -s  ${device_name}  shell  cat  ${file_content_path}
     [Return]  ${result}
 
+Get File Information From Device
+    [Documentation]  It will return information for the specified file, ${file_path}
+    ...  is the complete root including the name of file and extension.
+    ...  device id can be specified and the return information can be filtered.
+    ...  For example, to only see Modification date set ${grep_filter}=Modify.
+    ...  By default all the available information of the file available with stat will be displayed.
+    [Arguments]  ${file_path}  ${grep_filter}=''  ${device_name}=${TEST_DEVICE_ID}
+    ${file_name}  Fetch From Right  ${file_path}  /
+    ${path}  Fetch From Left  ${file_path}  ${file_name}
+    ${result}  Run Process  adb  -s  ${device_name}  shell  cd  ${path}  ;  stat  ${file_name}  |  grep  '${grep_filter}'
+    Log  ${result.stdout}
+    Log  ${result.stderr}
+    Should Be Empty  ${result.stderr}
+    [Return]  ${result.stdout}
+
 Run adb getprop on Device
     [Arguments]  ${command}  ${device_name}=${TEST_DEVICE_ID}
     ${result}  Run Process  adb  -s  ${device_name}  shell  getprop  ${command}
@@ -175,10 +190,13 @@ Turn Off the Wifi on Device by ADB
     Should Contain  ${wifi_status}  Wi-Fi is disabling
 
 Turn On the Wifi on Device by ADB
-    [Arguments]  ${device_name}=${TEST_DEVICE_ID}
+    [Arguments]  ${device_name}=${TEST_DEVICE_ID}  ${time_to_wait}=10
     Run Process  adb  -s  ${device_name}  shell  svc  wifi  enable
-    ${wifi_status}  Check Wifi Status Adb  ${device_name}
-    Should Contain  ${wifi_status}  Wi-Fi is enabling
+    FOR  ${n}  IN  RANGE  ${time_to_wait}
+        ${wifi_status}  Check Wifi Status Adb  ${device_name}
+        Exit For Loop If  '${wifi_status}' == 'Wi-Fi is enabled'
+        Sleep  1s
+    END
     
 Wifi is On in the Device
     [Documentation]  Returns True if the Wifi is on, otherwise it returns false
