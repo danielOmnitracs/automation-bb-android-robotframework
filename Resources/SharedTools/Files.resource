@@ -10,6 +10,7 @@ Library  OperatingSystem
 Library  String
 Library  Collections
 Library  ../../CustomLibraries/handlelist.py
+Library  ../../CustomLibraries/logParser.py
 Resource  adb.resource
 
 *** Keywords ***
@@ -69,3 +70,9 @@ Create a Configuration File with some Text in Local Projet Folder
     ${file_path}  Set Variable  ${EXECDIR}/Data/TestFiles/${file_name}
     Create File  ${file_path}  content=${file_text}
     [Return]  ${file_path} 
+
+Get Text From Log File Surrounded By a String
+    [Documentation]    From serial log files gets the stringLines surrounded by a string.
+    [Arguments]    ${filename}    ${stringToFind}
+    ${stringLines} =   Get Text Surrounded by String   ${filename}    ${stringToFind}
+    [Return]    ${stringLines}
