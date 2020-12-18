@@ -26,16 +26,16 @@ String Appears in X min Y Times in Log
     ...  Y times ${occurences} in the specified serial log ${log_name}. This is done while 
     ...  the log is being monitored.
     [Arguments]  ${string_to_find}  ${time_to_wait}  ${occurences}  ${log_name}
-    ${result}  String Found in Log n Times  ${string_to_find}  ${time_to_wait}  ${occurences}  ${log_name}
-    Should Be True  ${result}
+    ${function_result}  String Found in Log n Times  ${string_to_find}  ${time_to_wait}  ${occurences}  ${log_name}
+    Should Be True  ${function_result}
 
 String Dont Appears in X min Y Times in Log
     [Documentation]  The string ${string_to_find} doesnt appears within X min ${time_to_wait}, 
     ...  Y times ${occurences} in the specified serial log ${log_name}. This is done while 
     ...  the log is being monitored.
     [Arguments]  ${string_to_find}  ${time_to_wait}  ${occurences}  ${log_name}
-    ${result}  String Found in Log n Times  ${string_to_find}  ${time_to_wait}  ${occurences}  ${log_name}
-    Should Not Be True  ${result}
+    ${function_result}  String Found in Log n Times  ${string_to_find}  ${time_to_wait}  ${occurences}  ${log_name}
+    Should Not Be True  ${function_result}
 
 Get N Lines Containing a String from Log
     [Documentation]  Once a log was saved, return n lines ${number_of_lines} that contains
@@ -48,12 +48,12 @@ Get N Lines Containing a String from Log
 String Is In The Given List
     [Documentation]  Checks if a string in inside at least one of the elements of ${list_with_string}
     [Arguments]  ${string}  ${list_with_strings}
-    ${result}  Set Variable  ${FALSE}
+    ${function_result}  Set Variable  ${FALSE}
     FOR  ${element}  IN  @{list_with_strings}
-        ${result}  Run Keyword and Return Status  Should Contain  ${element}  ${string}    
-        Exit For Loop If  ${result}==${TRUE}
+        ${function_result}  Run Keyword and Return Status  Should Contain  ${element}  ${string}    
+        Exit For Loop If  ${function_result}==${TRUE}
     END
-    Should Be True  ${result}
+    Should Be True  ${function_result}
 
 N Number of Filtered Lines of Log File Should Contain a String
     [Documentation]  Logs n lines ${number_of_lines} of the specified serial log ${log_name}
@@ -65,32 +65,38 @@ N Number of Filtered Lines of Log File Should Contain a String
 
 String Found in Serial Log File
     [Documentation]  Check if an already saved log file from the serial port ${log_name} has a string ${string_to_find}
-    [Arguments]  ${string_to_find}  ${log_name}
+    [Arguments]  ${string_to_find}  ${log_name}  ${string_or_regex}=string
     ${path}  Get Log File Path  ${log_name}
-    ${result}  File Contains String  ${string_to_find}  ${path}
-    Should Be True  ${result}
+    ${function_result}  File Contains String  ${string_to_find}  ${path}  ${string_or_regex}
+    Should Be True  ${function_result}
 
 String not Found in Serial Log File
     [Documentation]  Check if an already saved log file from the serial port ${log_name} doesnt have a string ${string_to_find}
-    [Arguments]  ${string_to_find}  ${log_name}
+    [Arguments]  ${string_to_find}  ${log_name}  ${string_or_regex}=string
     ${path}  Get Log File Path  ${log_name}
-    ${result}  File Contains String  ${string_to_find}  ${path}
-    Should Not Be True  ${result}
+    ${function_result}  File Contains String  ${string_to_find}  ${path}  ${string_or_regex}
+    Should Not Be True  ${function_result}
 
 Word is in Log File More Than N Times
     [Documentation]  A word ${sting_to_find} appears more than n times ${occurrences} in an already saved file of
     ...  serial port  ${log_name}
     [Arguments]  ${sting_to_find}  ${log_name}  ${occurrences}
     ${path}  Get Log File Path  ${log_name}
-    ${result}  Count Word in File  ${sting_to_find}  ${path}
-    should be true  ${result} > ${occurrences}
+    ${function_result}  Count Word in File  ${sting_to_find}  ${path}
+    should be true  ${function_result} > ${occurrences}
 
 Serial Log File Contains Words
     [Documentation]  The list of words @{words} exist in an already saved log file of the serial port ${log_name}
     [Arguments]  ${log_name}  @{words}
     ${path}  Get Log File Path  ${log_name}
-    ${result}  Verify Multiple Strings in File  ${words}  ${path}
-    should be true  ${result}
+    ${function_result}  Verify Multiple Strings in File  ${words}  ${path}
+    should be true  ${function_result}
+
+Get First Line in Log File with Specified String
+    [Arguments]  ${log_name}  ${string_to_find}
+    ${path}  Get Log File Path  ${log_name}
+    ${line_with_string}  Return First Line with String  ${string_to_find}  ${path}
+    [Return]  ${line_with_string}
 
 Close Serial Ports
     close port
